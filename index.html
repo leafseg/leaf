@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="LEAF: Latent Diffusion with Efficient Encoder Distillation for Aligned Features in Medical Image Segmentation">
+  <meta name="keywords" content="depth, estimation, monocular, scene, reconstruction">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>LEAF</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1FWSVCGZTG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-1FWSVCGZTG');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/bulma.min.css">
+  <link rel="stylesheet" href="./css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./css/twentytwenty.css">
+  <link rel="stylesheet" href="./css/index.css">
+  <link rel="icon" href="./images/leaf_icon.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <script src="./js/jquery-3.2.1.min.js"></script>
+  <script src="./js/jquery.event.move.js"></script>
+  <script src="./js/jquery.twentytwenty.js"></script>
+  <script src="./js/bulma-carousel.min.js"></script>
+  <script src="./js/bulma-slider.min.js"></script>
+  <script src="./js/fontawesome.all.min.js"></script>
+
+  <!--MathJax-->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title"><span class="highlight">LEAF</span>: <span class="highlight">L</span>atent Diffusion with <span class="highlight">E</span>fficient Encoder Distillation for <span class="highlight">A</span>ligned <span class="highlight">F</span>eatures in Medical Image Segmentation</h1>
+          <style>
+            .highlight {
+              background: linear-gradient(to right, #006400, #ADFF2F);
+              -webkit-background-clip: text;
+              background-clip: text;
+              -webkit-text-fill-color: transparent;
+              font-weight: bold;
+            }
+          </style>
+          <h3 class="title has-text-centered">MICCAI 2025</h3>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://github.com/Pearisli" target="_blank" rel="noopener noreferrer">
+                Qilin Huang<sup>1</sup>
+            </a>,
+            </span>
+            <span class="author-block">
+              <a href="https://lin-tianyu.github.io/" target="_blank" rel="noopener noreferrer">
+                Tianyu Lin<sup>2</sup>
+            </a>,
+            </span>
+            <span class="author-block">
+              <a href="https://cse.sysu.edu.cn/teacher/ChenZhiguang" target="_blank" rel="noopener noreferrer">
+                Zhiguang Chen<sup>1</sup></a>,
+            </span>
+            <span class="author-block">
+                <a href="" target="_blank" rel="noopener noreferrer">
+                Fudan Zheng<sup>1&#9993;</sup></a>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Sun Yat-sen University</span>
+            <span class="author-block"><sup>2</sup>Johns Hopkins University</span>
+            <span class="author-block"><sup>&#9993;</sup>Corresponding author.</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2409.18124" target="_blank" rel="noopener noreferrer"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="ai ai-arxiv" style="font-size:23px"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/Pearisli/LEAF" target="_blank" rel="noopener noreferrer"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fab fa-github" style="font-size:23px"></i>
+                  </span>
+                  <span>
+                    Code
+                  </span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+        <p>
+          Leveraging the powerful capabilities of diffusion models has yielded quite effective results in medical image segmentation tasks. However, existing methods typically transfer the original training process directly without specific adjustments for segmentation tasks. Furthermore, the commonly used pre-trained diffusion models still have deficiencies in feature extraction.
+        </p><p>
+          Based on these considerations, we propose <span class="methodname" style="font-weight: bold;">LEAF</span>, a medical image segmentation model grounded in latent diffusion models. During the fine-tuning process, we replace the original noise prediction pattern with a direct prediction of the segmentation map, thereby reducing the variance of segmentation results. We also employ a feature distillation method to align the hidden states of the convolutional layers with the features from a transformer-based vision encoder.
+        </p><p>
+          Experimental results demonstrate that our method enhances the performance of the original diffusion model across multiple segmentation datasets for different disease types. Notably, our approach does not alter the model architecture, nor does it increase the number of parameters or computation during the inference phase, making it highly efficient.
+        </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Method. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Methodology</h2>
+        <div class="content has-text-justified">
+          <h3 class="title has-text-centered">
+            Fine-tuning Framework
+          </h3>
+
+          <p>
+          After the pre-trained VAE encoder $\mathcal{E}$ encodes the image $\textbf{x}$ and annotation $\textbf{y}$ to the latent space:
+          &#9312;the denoiser U-Net model $f_\theta$ is fine-tuned using $x_0$-prediction;
+          &#9313;we employ single-step diffusion formulation at time-step $t=T$ for better coverage;
+          &#9314;we propose a novel detail preserver, to switch the model either to reconstruct the image or generate the dense prediction via a switcher $s$, ensuring a more fine-grained prediction.
+          The noise $\mathbf{z_T^y}$ in bracket is used for our generative <span class="methodname" style="font-weight: bold;">Lotus-G</span> and is omitted for the discriminative <span class="methodname" style="font-weight: bold;">Lotus-D</span>.
+        </p>
+          
+          <img id="method_train" width="100%" src="./images/pipeline.svg" alt="LEAF training scheme"/>
+
+          <h3 class="title has-text-centered">
+            Inference Scheme
+          </h3>
+
+          <p>
+            The standard Gaussian noise $\mathbf{z_T^y}$ and encoded RGB image $\mathbf{z^x}$ are concatenated to form the input. We set $t=T$ and
+            the switcher to $s_y$. The denoiser U-Net model then predicts the latent dense prediction that is further decoded to get the final output.
+            The noise $\mathbf{z_T^y}$ in bracket is used for <span class="methodname" style="font-weight: bold;">Lotus-G</span> and omitted for <span class="methodname" style="font-weight: bold;">Lotus-D</span>.
+          </p>
+
+          <img id="method_inference" width="100%" src="./images/inference.svg" alt="LEAF inference scheme" style="display: block; margin: auto;"/>
+        </div>
+          <h2 class="title is-3">Experiments</h2>
+          <div class="content has-text-justified">
+          <h3 class="title has-text-centered">
+            Multi-Type Medical Image Segmentation
+          </h3>
+
+          <p>
+            Quantitative comparison of <span class="methodname" style="font-weight: bold;">LEAF</span> against discriminative and diffusion-based models across four medical image segmentation datasets.
+          </p>
+
+          <img id="segmentation" width="100%" src="./images/exp_seg.png" alt="Comparison with other methods"/>
+
+          <h3 class="title has-text-centered">
+            Ablation Study
+          </h3>
+
+          <p>
+            The $x_{0}$-prediction enhanced with feature alignment consistently outperforms all other methods, demonstrating especially large improvements over the standard $ε$-prediction approach.
+          </p>
+
+          <img id="ablation" width="100%" src="./images/exp_ablation.png" alt="Ablation" style="display: block; margin: 0 auto;"/>
+
+          <p class="mt-5">
+            Please refer to our paper linked above for more technical details :)
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Method. -->
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre class="selectable"><code>@InProceedings{huang2025leaf,
+    title={LEAF: Latent Diffusion with Efficient Encoder Distillation for Aligned Features in Medical Image Segmentation},
+    author={Huang, Qilin and Lin, Tianyu and Chen, Zhiguang and Zheng, Fudan},
+    booktitle={Medical Image Computing and Computer Assisted Intervention -- MICCAI 2025},
+    year={2025},
+    publisher={Springer Nature Switzerland},
+}
+</code></pre>
+  </div>
+</section>
+
+<footer class="footer pt-4 pb-0">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            Website template based on
+            <a href="https://marigoldmonodepth.github.io/">
+            Marigold
+            </a>
+            and licensed under
+            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+            CC-BY-SA-4.0
+            </a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
