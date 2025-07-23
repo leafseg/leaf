@@ -166,9 +166,8 @@
           <p>
           After the pre-trained VAE encoder $\mathcal{E}$ encodes the image $\textbf{x}$ and annotation $\textbf{y}$ to the latent space:
           &#9312;the denoiser U-Net model $f_\theta$ is fine-tuned using $x_0$-prediction;
-          &#9313;we employ single-step diffusion formulation at time-step $t=T$ for better coverage;
-          &#9314;we propose a novel detail preserver, to switch the model either to reconstruct the image or generate the dense prediction via a switcher $s$, ensuring a more fine-grained prediction.
-          The noise $\mathbf{z_T^y}$ in bracket is used for our generative <span class="methodname" style="font-weight: bold;">Lotus-G</span> and is omitted for the discriminative <span class="methodname" style="font-weight: bold;">Lotus-D</span>.
+          &#9313;we introduce a feature alignment method via distilling a vision encoder to enhance the U-Net's representation;
+          &#9314;we employ a single-step reverse process for efficient inference.
         </p>
           
           <img id="method_train" width="100%" src="./images/pipeline.svg" alt="LEAF training scheme"/>
@@ -178,9 +177,10 @@
           </h3>
 
           <p>
-            The standard Gaussian noise $\mathbf{z_T^y}$ and encoded RGB image $\mathbf{z^x}$ are concatenated to form the input. We set $t=T$ and
-            the switcher to $s_y$. The denoiser U-Net model then predicts the latent dense prediction that is further decoded to get the final output.
-            The noise $\mathbf{z_T^y}$ in bracket is used for <span class="methodname" style="font-weight: bold;">Lotus-G</span> and omitted for <span class="methodname" style="font-weight: bold;">Lotus-D</span>.
+          The noisy latent variable \(\mathbf{z_t^y}\) and encoded image \(\mathbf{z^x}\) are concatenated to form the input. We set \(t\) to
+             a random time step during training and use a single-step reverse process during inference. The U-Net model then predicts the latent
+             segmentation map that is further decoded to get the final output. The feature alignment module is removed during inference, incurring
+             no additional computational overhead.
           </p>
 
           <img id="method_inference" width="100%" src="./images/inference.svg" alt="LEAF inference scheme" style="display: block; margin: auto;"/>
